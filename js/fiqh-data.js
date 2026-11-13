@@ -11,6 +11,23 @@ export const CURRENCIES = {
   GBP: { code: 'GBP', symbol: '£', nameAr: 'الجنيه الإسترليني', nameEn: 'British Pound', rateFromEGP: 0.0158 }
 };
 
+export function applyLiveRatesFromEGP(ratesObj) {
+  if (!ratesObj || typeof ratesObj !== 'object') return false;
+  let updated = false;
+  Object.keys(CURRENCIES).forEach((code) => {
+    if (code === 'EGP') {
+      CURRENCIES.EGP.rateFromEGP = 1;
+      return;
+    }
+    const val = ratesObj[code] ?? ratesObj[code.toLowerCase()];
+    if (typeof val === 'number' && val > 0) {
+      CURRENCIES[code].rateFromEGP = val;
+      updated = true;
+    }
+  });
+  return updated;
+}
+
 export const NISAB_CONSTANTS = {
   GOLD_GRAMS_24K: 85,
   SILVER_GRAMS: 595,

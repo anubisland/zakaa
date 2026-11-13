@@ -3,7 +3,8 @@ import {
   NISAB_CONSTANTS,
   CATEGORY_COLORS,
   calculateLivestockZakat,
-  MASARIF_DATA
+  MASARIF_DATA,
+  applyLiveRatesFromEGP
 } from './fiqh-data.js';
 import { TRANSLATIONS } from './i18n.js';
 import {
@@ -14,6 +15,9 @@ import {
 } from './charts.js';
 
 const STORAGE_KEY = 'anubisland_zakaa_state_v1';
+const FX_CACHE_KEY = 'anubisland_zakaa_fx_v1';
+
+let fxStatus = { mode: 'loading', updatedAt: null };
 
 let state = {
   lang: 'ar',
@@ -23,7 +27,8 @@ let state = {
   currency: 'EGP',
   nisabMethod: 'gold',
   goldPriceEGP: NISAB_CONSTANTS.DEFAULT_GOLD_24K_EGP,
-  silverPriceEGP: NISAB_CONSTANTS.DEFAULT_SILVER_EGP
+  silverPriceEGP: NISAB_CONSTANTS.DEFAULT_SILVER_EGP,
+  multiCurrencies: []
 };
 
 const el = (id) => document.getElementById(id);
@@ -81,8 +86,127 @@ function applyLanguage() {
   });
 
   initCurrencySelect();
+  renderMultiCurrencyRows();
   renderMasarif();
+  updateFxBadge();
   recalculate();
+}
+
+function updateFxBadge() {
+  const badge = el('fxStatusBadge');
+  if (!badge) return;
+  const t = TRANSLATIONS[state.lang];
+  if (fxStatus.mode === 'loading') {
+    badge.textContent = `⏳ ${t.fxLoading}`;
+  } else if (fxStatus.mode === 'live') {
+    const timeStr = fxStatus.updatedAt
+      ? new Date(fxStatus.updatedAt).toLocaleTimeString(state.lang === 'ar' ? 'ar-EG' : 'en-US', { hour: '2-digit', minute: '2-digit' })
+      : '';
+    badge.textContent = `🟢 ${t.fxLive}${timeStr ? ` (${timeStr})` : ''}`;
+  } else {
+    badge.textContent = `🟡 ${t.fxCached}`;
+  }
+}
+
+async function fetchLiveExchangeRates() {
+  fxStatus.mode = 'loading';
+  updateFxBadge();
+
+  const loadCached = () => {
+    try {
+      const raw = localStorage.getItem(FX_CACHE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.rates) {
+          applyLiveRatesFromEGP(parsed.rates);
+          fxStatus = { mode: 'cached', updatedAt: parsed.updatedAt || null };
+          return true;
+        }
+      }
+    } catch (_) {}
+    fxStatus = { mode: 'cached', updatedAt: null };
+    return false;
+  };
+
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+    loadCached();
+    updateFxBadge();
+    syncMetalInputsToCurrency();
+    recalculate();
+    return;
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 5000);
+
+  try {
+    let rates = null;
+    try {
+      const res = await fetch('https://open.er-api.com/v6/latest/EGP', { signal: controller.signal });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.rates) rates = data.rates;
+      }
+    } catch (_) {}
+
+    if (!rates) {
+      const res2 = await fetch('https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/egp.json', { signal: controller.signal });
+      if (res2.ok) {
+        const data2 = await res2.json();
+        if (data2?.egp) rates = data2.egp;
+      }
+    }
+
+    if (rates && applyLiveRatesFromEGP(rates)) {
+      const now = Date.now();
+      localStorage.setItem(FX_CACHE_KEY, JSON.stringify({ rates, updatedAt: now }));
+      fxStatus = { mode: 'live', updatedAt: now };
+    } else {
+      loadCached();
+    }
+  } catch (_) {
+    loadCached();
+  } finally {
+    clearTimeout(timer);
+    updateFxBadge();
+    syncMetalInputsToCurrency();
+    recalculate();
+  }
+}
+
+function renderMultiCurrencyRows() {
+  const container = el('multiCurrencyRows');
+  if (!container) return;
+  container.innerHTML = state.multiCurrencies.map((entry, idx) => {
+    const options = Object.values(CURRENCIES).map((c) => {
+      const label = `${c.code} (${c.symbol})`;
+      return `<option value="${c.code}" ${c.code === entry.code ? 'selected' : ''}>${label}</option>`;
+    }).join('');
+    return `
+      <div class="mc-row" data-mc-idx="${idx}">
+        <select class="mc-code">${options}</select>
+        <input type="number" class="mc-amount" min="0" step="any" placeholder="0" value="${entry.amount}" />
+        <button type="button" class="btn-remove-mc" title="Remove">×</button>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.mc-row').forEach((row) => {
+    const idx = parseInt(row.getAttribute('data-mc-idx'), 10);
+    row.querySelector('.mc-code').addEventListener('change', (e) => {
+      state.multiCurrencies[idx].code = e.target.value;
+      recalculate();
+    });
+    row.querySelector('.mc-amount').addEventListener('input', (e) => {
+      state.multiCurrencies[idx].amount = e.target.value;
+      recalculate();
+    });
+    row.querySelector('.btn-remove-mc').addEventListener('click', () => {
+      state.multiCurrencies.splice(idx, 1);
+      renderMultiCurrencyRows();
+      recalculate();
+    });
+  });
 }
 
 function applyTheme() {
@@ -110,8 +234,19 @@ function recalculate() {
   const nisabSilver = NISAB_CONSTANTS.SILVER_GRAMS * silverPrice;
   const activeNisab = state.nisabMethod === 'silver' ? nisabSilver : nisabGold;
 
-  // 1. Cash
-  const cashNet = Math.max(0, num('cashOnHand') + num('cashBank') - num('cashDebtsDue'));
+  // 1. Cash (Main Currency + Multi-Currency Wallet converted via live FX rates)
+  const cashMainRaw = num('cashOnHand') + num('cashBank');
+  const cashDebtsDue = num('cashDebtsDue');
+  let multiConvertedToDisplay = 0;
+  state.multiCurrencies.forEach((entry) => {
+    const amt = Math.max(0, parseFloat(entry.amount) || 0);
+    if (amt > 0) {
+      const entryCur = CURRENCIES[entry.code] || CURRENCIES.EGP;
+      const inEGP = amt / entryCur.rateFromEGP;
+      multiConvertedToDisplay += inEGP * cur.rateFromEGP;
+    }
+  });
+  const cashNet = Math.max(0, cashMainRaw + multiConvertedToDisplay - cashDebtsDue);
   const cashHawlOk = el('cashHawl').value === 'yes';
   const cashBase = cashHawlOk ? cashNet : 0;
 
@@ -187,6 +322,32 @@ function recalculate() {
 
   // Update Card Outputs
   el('resCash').textContent = formatMoney(cashZakat, sym, lang);
+
+  // Per-currency breakdown display for Cash
+  const perCurBox = el('cashPerCurrencyBox');
+  const cashOutputMode = el('cashOutputMode')?.value || 'unified';
+  if (perCurBox) {
+    const hasMulti = state.multiCurrencies.some((e) => (parseFloat(e.amount) || 0) > 0);
+    if (cashOutputMode === 'per_currency' && meetsNisab && cashHawlOk && (cashMainRaw > 0 || hasMulti)) {
+      const lines = [];
+      const mainNet = Math.max(0, cashMainRaw - cashDebtsDue);
+      if (mainNet > 0) {
+        lines.push(`<div class="pcb-item"><span>${cur.code} (${cur.symbol})</span><span>${formatMoney(mainNet * 0.025, sym, lang)}</span></div>`);
+      }
+      state.multiCurrencies.forEach((entry) => {
+        const amt = Math.max(0, parseFloat(entry.amount) || 0);
+        if (amt > 0) {
+          const cObj = CURRENCIES[entry.code] || CURRENCIES.EGP;
+          lines.push(`<div class="pcb-item"><span>${cObj.code} (${cObj.symbol})</span><span>${formatMoney(amt * 0.025, cObj.symbol, lang)}</span></div>`);
+        }
+      });
+      perCurBox.innerHTML = `<div class="pcb-title">${t.mcBreakdownTitle}</div>${lines.join('')}`;
+      perCurBox.classList.remove('hidden');
+    } else {
+      perCurBox.classList.add('hidden');
+      perCurBox.innerHTML = '';
+    }
+  }
   el('resGold').textContent = formatMoney(metalsZakat, sym, lang);
   el('resStocks').textContent = formatMoney(stocksZakat, sym, lang);
   el('resTrade').textContent = formatMoney(tradeZakat, sym, lang);
@@ -380,8 +541,24 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('input[data-calc]').forEach((inp) => {
       inp.value = inp.id === 'fitrPerPerson' ? '35' : '';
     });
+    state.multiCurrencies = [];
+    renderMultiCurrencyRows();
     recalculate();
   });
+
+  el('btnAddCurrency')?.addEventListener('click', () => {
+    const fallbackCodes = ['USD', 'SAR', 'AED', 'EUR', 'GBP', 'KWD', 'EGP'];
+    const nextCode = fallbackCodes.find((c) => c !== state.currency && !state.multiCurrencies.some((m) => m.code === c)) || 'USD';
+    state.multiCurrencies.push({ code: nextCode, amount: '' });
+    renderMultiCurrencyRows();
+    saveState();
+  });
+
+  el('btnRefreshFx')?.addEventListener('click', fetchLiveExchangeRates);
+  window.addEventListener('online', fetchLiveExchangeRates);
+
+  // Fetch live FX rates automatically on startup
+  fetchLiveExchangeRates();
 
   // View / Screen Switching
   document.querySelectorAll('.nav-pill[data-view]').forEach((btn) => {

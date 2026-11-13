@@ -336,6 +336,127 @@ body {
   font-weight: 600;
 }
 
+.fx-status-bar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  flex-wrap: wrap;
+}
+
+.fx-badge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #a7f3d0;
+}
+
+.fx-refresh-btn {
+  border: 1px solid rgba(251, 191, 36, 0.45);
+  background: rgba(4, 34, 25, 0.75);
+  color: #fde68a;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.multi-currency-box {
+  background: var(--bg-soft);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.btn-add-currency {
+  border: none;
+  background: var(--brand-emerald);
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+[data-theme="dark"] .btn-add-currency {
+  color: #06281e;
+}
+
+.mc-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mc-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr auto;
+  gap: 6px;
+  align-items: center;
+}
+
+.mc-row select,
+.mc-row input {
+  padding: 7px 9px;
+  border-radius: 8px;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+.btn-remove-mc {
+  border: 1px solid #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  width: 30px;
+  height: 32px;
+  border-radius: 8px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.per-currency-breakdown {
+  background: var(--bg-card);
+  border: 1px dashed var(--brand-emerald-light);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 0.82rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pcb-title {
+  font-weight: 800;
+  color: var(--brand-emerald);
+}
+
+.pcb-item {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
 /* KPI Summary Strip */
 .kpi-strip {
   display: grid;

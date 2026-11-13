@@ -91,6 +91,10 @@
             <label for="silverPriceInput" data-i18n="silverPriceLabel">سعر جرام الفضة:</label>
             <input type="number" id="silverPriceInput" min="0" step="any" />
           </div>
+          <div class="fx-status-bar">
+            <span id="fxStatusBadge" class="fx-badge">⏳ جاري تحديث أسعار الصرف...</span>
+            <button id="btnRefreshFx" type="button" class="fx-refresh-btn" data-i18n="fxRefreshBtn">تحديث الصرف</button>
+          </div>
         </div>
       </div>
     </section>
@@ -161,6 +165,22 @@
                   <option value="no" data-i18n="optHawlNo">لم يتم الحول بعد</option>
                 </select>
               </div>
+            </div>
+            <!-- Multi-Currency Wallet -->
+            <div class="multi-currency-box">
+              <div class="mc-header">
+                <span data-i18n="mcTitle">أرصدة بعملات أخرى (تحويل تلقائي)</span>
+                <button type="button" id="btnAddCurrency" class="btn-add-currency" data-i18n="mcAddBtn">+ إضافة عملة</button>
+              </div>
+              <div id="multiCurrencyRows" class="mc-rows"></div>
+              <div class="form-group" style="margin-top:8px;">
+                <label for="cashOutputMode" data-i18n="lblCashOutputMode">طريقة عرض زكاة العملات</label>
+                <select id="cashOutputMode" data-calc>
+                  <option value="unified" data-i18n="optCashUnified">توحيد الإجمالي بعملة العرض المختارة</option>
+                  <option value="per_currency" data-i18n="optCashPerCurrency">إظهار الزكاة لكل عملة على حدة</option>
+                </select>
+              </div>
+              <div id="cashPerCurrencyBox" class="per-currency-breakdown hidden"></div>
             </div>
             <div class="card-result">
               <span data-i18n="dueLabel">الزكاة المستحقة:</span>
