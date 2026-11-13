@@ -65,6 +65,7 @@ function applyLanguage() {
   const t = TRANSLATIONS[state.lang];
   document.documentElement.lang = state.lang;
   document.documentElement.dir = state.lang === 'ar' ? 'rtl' : 'ltr';
+  document.title = state.lang === 'ar' ? 'حاسبة الزكاة | Anubisland' : 'Zakat Calculator | Anubisland';
   el('btnLang').textContent = state.lang === 'ar' ? '🌐 EN' : '🌐 عربي';
   el('txtAppTitle').textContent = t.appTitle;
   el('txtBrandSub').textContent = t.brandSub;
@@ -72,6 +73,11 @@ function applyLanguage() {
   document.querySelectorAll('[data-i18n]').forEach((node) => {
     const key = node.getAttribute('data-i18n');
     if (t[key]) node.textContent = t[key];
+  });
+
+  document.querySelectorAll('[data-i18n-html]').forEach((node) => {
+    const key = node.getAttribute('data-i18n-html');
+    if (t[key]) node.innerHTML = t[key];
   });
 
   initCurrencySelect();

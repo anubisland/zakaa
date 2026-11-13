@@ -41,17 +41,17 @@
           <span>📲</span> <span data-i18n="installBtn">تثبيت التطبيق</span>
         </button>
         <select id="fontSelect" class="header-select" title="نوع الخط" aria-label="نوع الخط">
-          <option value="'Cairo', sans-serif">خط: Cairo (كايرو)</option>
-          <option value="'Amiri', serif">خط: Amiri (أميري)</option>
-          <option value="'Tajawal', sans-serif">خط: Tajawal (تجول)</option>
-          <option value="'Almarai', sans-serif">خط: Almarai (المراعي)</option>
-          <option value="'Readex Pro', sans-serif">خط: Readex Pro</option>
+          <option value="'Cairo', sans-serif" data-i18n="fontCairo">خط: Cairo (كايرو)</option>
+          <option value="'Amiri', serif" data-i18n="fontAmiri">خط: Amiri (أميري)</option>
+          <option value="'Tajawal', sans-serif" data-i18n="fontTajawal">خط: Tajawal (تجول)</option>
+          <option value="'Almarai', sans-serif" data-i18n="fontAlmarai">خط: Almarai (المراعي)</option>
+          <option value="'Readex Pro', sans-serif" data-i18n="fontReadex">خط: Readex Pro</option>
         </select>
         <select id="fontSizeSelect" class="header-select" title="حجم الخط" aria-label="حجم الخط">
-          <option value="14px">حجم: صغير</option>
-          <option value="16px" selected>حجم: متوسط</option>
-          <option value="18px">حجم: كبير</option>
-          <option value="20px">حجم: كبير جداً</option>
+          <option value="14px" data-i18n="sizeSm">حجم: صغير</option>
+          <option value="16px" selected data-i18n="sizeMd">حجم: متوسط</option>
+          <option value="18px" data-i18n="sizeLg">حجم: كبير</option>
+          <option value="20px" data-i18n="sizeXl">حجم: كبير جداً</option>
         </select>
         <button id="btnLang" class="btn-icon" type="button" title="Switch Language">🌐 EN</button>
         <button id="btnTheme" class="btn-icon" type="button" title="Toggle Theme">🌙</button>
@@ -66,7 +66,7 @@
     <section class="hero-section">
       <div class="hero-grid">
         <div class="hero-content">
-          <div class="hero-tag">✨ Anubisland • منهج أهل السنة والجماعة</div>
+          <div class="hero-tag" data-i18n="heroTag">✨ Anubisland • منهج أهل السنة والجماعة</div>
           <h2 data-i18n="appTitle">حاسبة الزكاة الشاملة</h2>
           <p data-i18n="appDesc">حاسبة ذكية لجميع أنواع الزكاة على منهج أهل السنة والجماعة مع رسوم بيانية تفاعلية ودليل فقهي وتعليمي متكامل</p>
         </div>
@@ -141,24 +141,24 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="cashOnHand">النقد والسيولة المتاحة</label>
+                <label for="cashOnHand" data-i18n="lblCashOnHand">النقد والسيولة المتاحة</label>
                 <input type="number" id="cashOnHand" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="cashBank">الأرصدة البنكية والودائع</label>
+                <label for="cashBank" data-i18n="lblCashBank">الأرصدة البنكية والودائع</label>
                 <input type="number" id="cashBank" min="0" placeholder="0" data-calc />
               </div>
             </div>
             <div class="input-row">
               <div class="form-group">
-                <label for="cashDebtsDue">الديون الحالة عليك (تُخصم)</label>
+                <label for="cashDebtsDue" data-i18n="lblCashDebtsDue">الديون الحالة عليك (تُخصم)</label>
                 <input type="number" id="cashDebtsDue" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="cashHawl">حولان الحول الهجري</label>
+                <label for="cashHawl" data-i18n="lblCashHawl">حولان الحول الهجري</label>
                 <select id="cashHawl" data-calc>
-                  <option value="yes">تم الحول الهجري (سنة قمرية)</option>
-                  <option value="no">لم يتم الحول بعد</option>
+                  <option value="yes" data-i18n="optHawlYes">تم الحول الهجري (سنة قمرية)</option>
+                  <option value="no" data-i18n="optHawlNo">لم يتم الحول بعد</option>
                 </select>
               </div>
             </div>
@@ -169,7 +169,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhCash">
               تجب زكاة المال بنسبة <strong>2.5% (ربع العشر)</strong> إذا بلغ صافي المال النصاب وحال عليه الحول الهجري. تُخصم الديون المستحقة السداد حالياً من إجمالي السيولة، وما بقي وبلغ النصاب تجب فيه الزكاة.
             </div>
           </details>
@@ -189,30 +189,30 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="goldGrams">وزن الذهب (جرام)</label>
+                <label for="goldGrams" data-i18n="lblGoldGrams">وزن الذهب (جرام)</label>
                 <input type="number" id="goldGrams" min="0" step="any" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="goldKarat">عيار الذهب</label>
+                <label for="goldKarat" data-i18n="lblGoldKarat">عيار الذهب</label>
                 <select id="goldKarat" data-calc>
-                  <option value="24">عيار 24 (نقي 100%)</option>
-                  <option value="21" selected>عيار 21 (87.5%)</option>
-                  <option value="18">عيار 18 (75%)</option>
-                  <option value="14">عيار 14 (58.3%)</option>
+                  <option value="24" data-i18n="optK24">عيار 24 (نقي 100%)</option>
+                  <option value="21" selected data-i18n="optK21">عيار 21 (87.5%)</option>
+                  <option value="18" data-i18n="optK18">عيار 18 (75%)</option>
+                  <option value="14" data-i18n="optK14">عيار 14 (58.3%)</option>
                 </select>
               </div>
             </div>
             <div class="input-row">
               <div class="form-group">
-                <label for="silverGrams">وزن الفضة (جرام)</label>
+                <label for="silverGrams" data-i18n="lblSilverGrams">وزن الفضة (جرام)</label>
                 <input type="number" id="silverGrams" min="0" step="any" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="goldPurpose">نوع الاقتناء</label>
+                <label for="goldPurpose" data-i18n="lblGoldPurpose">نوع الاقتناء</label>
                 <select id="goldPurpose" data-calc>
-                  <option value="saving">ادخار / سبائك / جنيهات</option>
-                  <option value="worn_hanafi">حلي ملبوس (الأحوط عند الحنفية)</option>
-                  <option value="worn_jumhur">حلي ملبوس معتاد (مذهب الجمهور: لا زكاة)</option>
+                  <option value="saving" data-i18n="optGoldSaving">ادخار / سبائك / جنيهات</option>
+                  <option value="worn_hanafi" data-i18n="optGoldWornHanafi">حلي ملبوس (الأحوط عند الحنفية)</option>
+                  <option value="worn_jumhur" data-i18n="optGoldWornJumhur">حلي ملبوس معتاد (مذهب الجمهور: لا زكاة)</option>
                 </select>
               </div>
             </div>
@@ -223,8 +223,8 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
-              نصاب الذهب <strong>85 جرام ذهب خالص (عيار 24)</strong>، ونصاب الفضة <strong>595 جرام</strong>، والمقدار الواجب <strong>2.5%</strong>. الحاسبة تحوّل العيارات تلقائياً إلى مكافئ عيار 24. أما حلي المرأة المعد للزينة المباحة: فذهب الجمهور (المالكية والشافعية والحنابلة) إلى عدم وجوب الزكاة فيه، وذهب الحنفية إلى وجوبها احتياطاً.
+            <div class="fiqh-content" data-i18n-html="fiqhGold">
+              نصاب الذهب <strong>85 جرام ذهب خالص (عيار 24)</strong>، ونصاب الفضة <strong>595 جرام</strong>، والمقدار الواجب <strong>2.5%</strong>. الحاسبة تحوّل العيارات تلقائياً إلى مكافئ عيار 24. أما حلي المرأة المعد للزينة المباحة: فذهب الجمهور إلى عدم وجوب الزكاة فيه، وذهب الحنفية إلى وجوبها احتياطاً.
             </div>
           </details>
         </article>
@@ -242,19 +242,19 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label for="stocksType">نية تملك الأسهم</label>
+              <label for="stocksType" data-i18n="lblStocksType">نية تملك الأسهم</label>
               <select id="stocksType" data-calc>
-                <option value="trading">مضاربة ومتاجرة (2.5% على القيمة السوقية)</option>
-                <option value="dividends">استثمار وعوائد طويلة الأجل (2.5% على العوائد أو 30% تقديرياً)</option>
+                <option value="trading" data-i18n="optStocksTrading">مضاربة ومتاجرة (2.5% على القيمة السوقية)</option>
+                <option value="dividends" data-i18n="optStocksDiv">استثمار وعوائد طويلة الأجل (2.5% على الأرباح)</option>
               </select>
             </div>
             <div class="input-row">
               <div class="form-group">
-                <label for="stocksMarketVal">القيمة السوقية للأسهم</label>
+                <label for="stocksMarketVal" data-i18n="lblStocksMarket">القيمة السوقية للأسهم</label>
                 <input type="number" id="stocksMarketVal" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="stocksDividends">صافي الأرباح الموزعة (للاستثمار)</label>
+                <label for="stocksDividends" data-i18n="lblStocksDiv">صافي الأرباح الموزعة (للاستثمار)</label>
                 <input type="number" id="stocksDividends" min="0" placeholder="0" data-calc />
               </div>
             </div>
@@ -265,8 +265,8 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
-              إذا كانت الأسهم للمضاربة والبيع والشراء فهي كعروض التجارة وتُزكى بنسبة <strong>2.5% على كامل القيمة السوقية</strong> عند تمام الحول. أما إذا كانت للاستثمار طويل الأجل وجني الأرباح، فتجب الزكاة في الأصول الزكوية للشركة أو بنسبة <strong>2.5% على الأرباح المحققة</strong> بعد الحول وبلوغ النصاب.
+            <div class="fiqh-content" data-i18n-html="fiqhStocks">
+              إذا كانت الأسهم للمضاربة والبيع والشراء فهي كعروض التجارة وتُزكى بنسبة <strong>2.5% على كامل القيمة السوقية</strong> عند تمام الحول. أما إذا كانت للاستثمار طويل الأجل وجني الأرباح، فتجب الزكاة بنسبة <strong>2.5% على الأرباح المحققة</strong> بعد الحول وبلوغ النصاب.
             </div>
           </details>
         </article>
@@ -285,16 +285,16 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="tradeInventory">قيمة البضاعة بسعر البيع الحالي</label>
+                <label for="tradeInventory" data-i18n="lblTradeInv">قيمة البضاعة بسعر البيع الحالي</label>
                 <input type="number" id="tradeInventory" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="tradeCash">النقدية + مستحقات لدى العملاء</label>
+                <label for="tradeCash" data-i18n="lblTradeCash">النقدية + مستحقات لدى العملاء</label>
                 <input type="number" id="tradeCash" min="0" placeholder="0" data-calc />
               </div>
             </div>
             <div class="form-group">
-              <label for="tradeLiabilities">التزامات وديون قصيرة الأجل على النشاط (تُخصم)</label>
+              <label for="tradeLiabilities" data-i18n="lblTradeLiab">التزامات وديون قصيرة الأجل على النشاط (تُخصم)</label>
               <input type="number" id="tradeLiabilities" min="0" placeholder="0" data-calc />
             </div>
             <div class="card-result">
@@ -304,7 +304,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhTrade">
               تُقوّم البضائع المعدة للبيع عند تمام الحول بسعر السوق الحالي، ويُضاف إليها النقد والديون المرجوة على العملاء، وتُطرح الديون الحالة على التاجر (دون الأصول الثابتة كالمباني والآلات)، ويُخرج <strong>2.5%</strong>.
             </div>
           </details>
@@ -324,20 +324,20 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="cropsKg">وزن المحصول (كيلوجرام)</label>
+                <label for="cropsKg" data-i18n="lblCropsKg">وزن المحصول (كيلوجرام)</label>
                 <input type="number" id="cropsKg" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="cropsValue">إجمالي قيمة المحصول</label>
+                <label for="cropsValue" data-i18n="lblCropsVal">إجمالي قيمة المحصول</label>
                 <input type="number" id="cropsValue" min="0" placeholder="0" data-calc />
               </div>
             </div>
             <div class="form-group">
-              <label for="cropsIrrigation">طريقة السقي والري</label>
+              <label for="cropsIrrigation" data-i18n="lblCropsIrr">طريقة السقي والري</label>
               <select id="cropsIrrigation" data-calc>
-                <option value="0.10">سقي بدون كلفة (مطر / أنهار) — العُشر 10%</option>
-                <option value="0.05">سقي بآلات وكلفة ومؤونة — نصف العُشر 5%</option>
-                <option value="0.075">سقي مشترك (نصف بمطر ونصف بآلة) — 7.5%</option>
+                <option value="0.10" data-i18n="optIrrRain">سقي بدون كلفة (مطر / أنهار) — العُشر 10%</option>
+                <option value="0.05" data-i18n="optIrrMachine">سقي بآلات وكلفة ومؤونة — نصف العُشر 5%</option>
+                <option value="0.075" data-i18n="optIrrMixed">سقي مشترك (نصف بمطر ونصف بآلة) — 7.5%</option>
               </select>
             </div>
             <div class="card-result">
@@ -347,7 +347,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhCrops">
               تجب زكاة الزروع والثمار <strong>يوم الحصاد</strong> ولا يُشترط لها الحول، ونصابها <strong>5 أوسق (نحو 653 كجم)</strong>. النسبة <strong>10%</strong> فيما سُقي بغير كلفة، و<strong>5%</strong> فيما سُقي بالآلات والنفقة، و<strong>7.5%</strong> في السقي المشترك.
             </div>
           </details>
@@ -367,24 +367,24 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="livestockType">نوع الأنعام</label>
+                <label for="livestockType" data-i18n="lblLivestockType">نوع الأنعام</label>
                 <select id="livestockType" data-calc>
-                  <option value="sheep">الغنم والماعز (النصاب 40)</option>
-                  <option value="cows">الأبقار والجاموس (النصاب 30)</option>
-                  <option value="camels">الإبل (النصاب 5)</option>
+                  <option value="sheep" data-i18n="optSheep">الغنم والماعز (النصاب 40)</option>
+                  <option value="cows" data-i18n="optCows">الأبقار والجاموس (النصاب 30)</option>
+                  <option value="camels" data-i18n="optCamels">الإبل (النصاب 5)</option>
                 </select>
               </div>
               <div class="form-group">
-                <label for="livestockCount">العدد الإجمالي</label>
+                <label for="livestockCount" data-i18n="lblLivestockCount">العدد الإجمالي</label>
                 <input type="number" id="livestockCount" min="0" placeholder="0" data-calc />
               </div>
             </div>
             <div class="form-group">
-              <label for="livestockGrazing">حالة الرعي والعلف</label>
+              <label for="livestockGrazing" data-i18n="lblLivestockGrazing">حالة الرعي والعلف</label>
               <select id="livestockGrazing" data-calc>
-                <option value="yes">سائمة (ترعى الكلأ المباح معظم العام)</option>
-                <option value="trade">معدة للتجارة والبيع (تُزكى كعروض تجارة)</option>
-                <option value="no">معلوفة معظم العام وليست للتجارة (لا زكاة)</option>
+                <option value="yes" data-i18n="optGrazingYes">سائمة (ترعى الكلأ المباح معظم العام)</option>
+                <option value="trade" data-i18n="optGrazingTrade">معدة للتجارة والبيع (تُزكى كعروض تجارة)</option>
+                <option value="no" data-i18n="optGrazingNo">معلوفة معظم العام وليست للتجارة (لا زكاة)</option>
               </select>
             </div>
             <div class="card-result">
@@ -394,7 +394,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhLivestock">
               تُحسب وفق الأنصبة النبوية الصحيحة: الغنم من 40 إلى 120 شاة، والبقر من 30 تبيعاً ومن 40 مسنة، والإبل من 5 شاة ثم تتدرج إلى بنت مخاض وبنت لبون وحقة وجذعة، بشرط السوم وحولان الحول.
             </div>
           </details>
@@ -413,15 +413,15 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label for="realEstateType">الغرض من العقار</label>
+              <label for="realEstateType" data-i18n="lblReType">الغرض من العقار</label>
               <select id="realEstateType" data-calc>
-                <option value="rental">عقار مؤجر (الزكاة على صافي الإيجار المدخر بعد الحول)</option>
-                <option value="trade">عقار معد للبيع والتجارة (2.5% من قيمته السوقية)</option>
-                <option value="personal">سكن شخصي (لا زكاة فيه)</option>
+                <option value="rental" data-i18n="optReRental">عقار مؤجر (الزكاة على صافي الإيجار المدخر بعد الحول)</option>
+                <option value="trade" data-i18n="optReTrade">عقار معد للبيع والتجارة (2.5% من قيمته السوقية)</option>
+                <option value="personal" data-i18n="optRePersonal">سكن شخصي (لا زكاة فيه)</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="realEstateVal">قيمة العقار السوقية أو صافي الإيجار المدخر</label>
+              <label for="realEstateVal" data-i18n="lblReVal">قيمة العقار السوقية أو صافي الإيجار المدخر</label>
               <input type="number" id="realEstateVal" min="0" placeholder="0" data-calc />
             </div>
             <div class="card-result">
@@ -431,7 +431,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhRe">
               لا زكاة في أصل العقار المؤجر ولا في السكن الشخصي، وإنما تجب الزكاة بنسبة <strong>2.5% في غلته (الإيجار)</strong> إذا ادّخر وبلغ النصاب وحال عليه الحول. أما العقارات المشتراة بنية البيع والربح فتُزكى كعروض تجارة على قيمتها السوقية.
             </div>
           </details>
@@ -450,14 +450,14 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label for="debtStatus">حالة المدين</label>
+              <label for="debtStatus" data-i18n="lblDebtStatus">حالة المدين</label>
               <select id="debtStatus" data-calc>
-                <option value="collectible">دين مرجو السداد (على مليء باذل)</option>
-                <option value="uncollectible">دين غير مرجو / على معسر (يُزكى عند قبضه لسنة واحدة)</option>
+                <option value="collectible" data-i18n="optDebtColl">دين مرجو السداد (على مليء باذل)</option>
+                <option value="uncollectible" data-i18n="optDebtUncoll">دين غير مرجو / على معسر (يُزكى عند قبضه لسنة واحدة)</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="debtOwedVal">قيمة الدين المستحق لك</label>
+              <label for="debtOwedVal" data-i18n="lblDebtVal">قيمة الدين المستحق لك</label>
               <input type="number" id="debtOwedVal" min="0" placeholder="0" data-calc />
             </div>
             <div class="card-result">
@@ -467,7 +467,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhDebts">
               الدين المرجو على قادر على السداد يُضم لمالك وتُخرج زكاته كل عام (<strong>2.5%</strong>). أما الدين الميؤوس منه أو على معسر فلا تجب زكاته حتى تقبضه، ثم تزكيه لسنة واحدة عند قبضه على الراجح من أقوال الفقهاء.
             </div>
           </details>
@@ -486,14 +486,14 @@
           </div>
           <div class="card-body">
             <div class="form-group">
-              <label for="rikazType">النوع</label>
+              <label for="rikazType" data-i18n="lblRikazType">النوع</label>
               <select id="rikazType" data-calc>
-                <option value="0.20">ركاز (دفين الجاهلية والكنوز المستخرجة) — 20%</option>
-                <option value="0.025">معادن مستخرجة من الأرض (ربع العشر) — 2.5%</option>
+                <option value="0.20" data-i18n="optRikaz">ركاز (دفين الجاهلية والكنوز المستخرجة) — 20%</option>
+                <option value="0.025" data-i18n="optMinerals">معادن مستخرجة من الأرض (ربع العشر) — 2.5%</option>
               </select>
             </div>
             <div class="form-group">
-              <label for="rikazVal">القيمة المقدرة</label>
+              <label for="rikazVal" data-i18n="lblRikazVal">القيمة المقدرة</label>
               <input type="number" id="rikazVal" min="0" placeholder="0" data-calc />
             </div>
             <div class="card-result">
@@ -503,7 +503,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhRikaz">
               لقوله ﷺ: «وفي الركاز الخُمس»، يجب في الركاز <strong>20% فوراً</strong> دون اشتراط نصاب أو حول. أما المعادن المستخرجة كالذهب والفضة فتُزكى بنسبة <strong>2.5%</strong> إذا بلغت النصاب.
             </div>
           </details>
@@ -523,11 +523,11 @@
           <div class="card-body">
             <div class="input-row">
               <div class="form-group">
-                <label for="fitrMembers">عدد أفراد الأسرة</label>
+                <label for="fitrMembers" data-i18n="lblFitrMembers">عدد أفراد الأسرة</label>
                 <input type="number" id="fitrMembers" min="0" placeholder="0" data-calc />
               </div>
               <div class="form-group">
-                <label for="fitrPerPerson">قيمة الفرد الواحد (صاع ≈ 2.5-3 كجم)</label>
+                <label for="fitrPerPerson" data-i18n="lblFitrPer">قيمة الفرد الواحد (صاع ≈ 2.5-3 كجم)</label>
                 <input type="number" id="fitrPerPerson" min="0" value="35" data-calc />
               </div>
             </div>
@@ -538,7 +538,7 @@
           </div>
           <details class="fiqh-details">
             <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
-            <div class="fiqh-content">
+            <div class="fiqh-content" data-i18n-html="fiqhFitr">
               تجب على كل مسلم يملك قوت يومه وليلته، ومقدارها <strong>صاع من غالب قوت البلد</strong> عن كل فرد، والأفضل إخراجها قبل صلاة عيد الفطر، ويجوز إخراجها قبل العيد بيوم أو يومين، كما أجاز الحنفية وجمع من المعاصرين إخراج قيمتها نقداً لمصلحة الفقير.
             </div>
           </details>
@@ -579,22 +579,22 @@
     <div id="view-education" class="app-view">
     <section id="education">
       <div class="section-head">
-        <h2>📚 <span data-i18n="navEdu">الدليل الثقافي والفقهي (منهج أهل السنة والجماعة)</span></h2>
+        <h2>📚 <span data-i18n="eduSectionTitle">الدليل الثقافي والفقهي (منهج أهل السنة والجماعة)</span></h2>
       </div>
 
       <div class="quran-box">
-        <p class="quran-verse">﴿ خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا وَصَلِّ عَلَيْهِمْ ۖ إِنَّ صَلَاتَكَ سَكَنٌ لَّهُمْ ﴾</p>
-        <span class="quran-ref">سورة التوبة — الآية 103</span>
+        <p class="quran-verse" data-i18n="quranVerse">﴿ خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا وَصَلِّ عَلَيْهِمْ ۖ إِنَّ صَلَاتَكَ سَكَنٌ لَّهُمْ ﴾</p>
+        <span class="quran-ref" data-i18n="quranRef">سورة التوبة — الآية 103</span>
       </div>
 
       <div class="edu-grid">
         <div class="edu-card">
-          <h3>🌟 أهمية الزكاة ومعانيها</h3>
-          <p>الزكاة هي <strong>الركن الثالث من أركان الإسلام</strong>، ومعناها في اللغة: النماء والطهارة والبركة. وهي عبادة مالية تطهر نفس الغني من الشح والبخل، وتطهر المال وتنميه وتباركه، وتحقق التكافل الاجتماعي وسد حاجة الفقراء في المجتمع المسلم.</p>
+          <h3 data-i18n="edu1Title">🌟 أهمية الزكاة ومعانيها</h3>
+          <p data-i18n-html="edu1Body">الزكاة هي <strong>الركن الثالث من أركان الإسلام</strong>، ومعناها في اللغة: النماء والطهارة والبركة. وهي عبادة مالية تطهر نفس الغني من الشح والبخل، وتطهر المال وتنميه وتباركه، وتحقق التكافل الاجتماعي وسد حاجة الفقراء في المجتمع المسلم.</p>
         </div>
         <div class="edu-card">
-          <h3>⚖️ شروط وجوب الزكاة</h3>
-          <ul>
+          <h3 data-i18n="edu2Title">⚖️ شروط وجوب الزكاة</h3>
+          <ul data-i18n-html="edu2Body">
             <li><strong>الإسلام والحرية:</strong> لا تجب على غير المسلم.</li>
             <li><strong>الملك التام:</strong> أن يكون المال مملوكاً لصاحبه وتحت تصرفه.</li>
             <li><strong>بلوغ النصاب:</strong> ما يعادل 85 جم ذهب عيار 24 أو 595 جم فضة.</li>
@@ -603,8 +603,8 @@
           </ul>
         </div>
         <div class="edu-card">
-          <h3>🕰️ وقت إخراج الزكاة</h3>
-          <ul>
+          <h3 data-i18n="edu3Title">🕰️ وقت إخراج الزكاة</h3>
+          <ul data-i18n-html="edu3Body">
             <li><strong>الأموال والتجارة والذهب والأنعام:</strong> عند تمام الحول القمري (الهجري).</li>
             <li><strong>الزروع والثمار:</strong> يوم الحصاد ﴿وَآتُوا حَقَّهُ يَوْمَ حَصَادِهِ﴾.</li>
             <li><strong>زكاة الفطر:</strong> من غروب شمس آخر يوم في رمضان إلى ما قبل صلاة العيد.</li>
@@ -613,8 +613,8 @@
           </ul>
         </div>
         <div class="edu-card">
-          <h3>🤲 آداب إخراج الزكاة ومن لا تجوز لهم</h3>
-          <ul>
+          <h3 data-i18n="edu4Title">🤲 آداب إخراج الزكاة ومن لا تجوز لهم</h3>
+          <ul data-i18n-html="edu4Body">
             <li>استحضار النية الخالصة لله تعالى عند الإخراج أو العزل.</li>
             <li>إخراجها من طيب المال لا من رديئه، مع الرفق بالفقير وعدم المنّ والأذى.</li>
             <li><strong>لا تجوز الزكاة لـ:</strong> الأصول (الوالدين والأجداد) والفروع (الأبناء والأحفاد)، ولا للزوجة، ولا للأغنياء، ولا لآل البيت النبوي الشريف.</li>
@@ -628,7 +628,7 @@
     <div id="view-masarif" class="app-view">
     <section id="masarif">
       <div class="section-head">
-        <h2>🧭 <span data-i18n="navMasarif">مصارف الزكاة الثمانية (التوبة: 60)</span></h2>
+        <h2>🧭 <span data-i18n="masarifSectionTitle">مصارف الزكاة الثمانية (التوبة: 60)</span></h2>
       </div>
       <div class="masarif-grid" id="masarifGrid"></div>
     </section>

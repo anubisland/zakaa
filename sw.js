@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anubisland-zakaa-v2';
+const CACHE_NAME = 'anubisland-zakaa-v3';
 const ASSETS = [
   './',
   './index.html',
