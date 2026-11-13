@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>حاسبة الزكاة | Anubisland</title>
+  <meta name="description" content="حاسبة الزكاة الشاملة من Anubisland لجميع أنواع الزكاة على منهج أهل السنة والجماعة مع رسوم بيانية تفاعلية ودليل ثقافي وتعليمي." />
+  <meta name="theme-color" content="#064e3b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="حاسبة الزكاة" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top Sticky Header -->
+  <header class="top-header">
+    <div class="container header-inner">
+      <div class="brand-box">
+        <img src="icons/icon-192.png" alt="شعار حاسبة الزكاة" class="brand-badge-img" />
+        <div class="brand-text">
+          <h1 id="txtAppTitle">حاسبة الزكاة الشاملة</h1>
+          <span id="txtBrandSub">منظومة Anubisland الذكية للزكاة</span>
+        </div>
+      </div>
+
+      <nav class="nav-pills" aria-label="Main Navigation">
+        <a href="#calculator" class="nav-pill active" data-i18n="navCalc">الحاسبة الذكية</a>
+        <a href="#analytics" class="nav-pill" data-i18n="navCharts">الرسوم والتحليلات</a>
+        <a href="#education" class="nav-pill" data-i18n="navEdu">الدليل الثقافي والفقهي</a>
+        <a href="#masarif" class="nav-pill" data-i18n="navMasarif">مصارف الزكاة</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="btnInstallPWA" class="btn-primary hidden" type="button">
+          <span>📲</span> <span data-i18n="installBtn">تثبيت التطبيق</span>
+        </button>
+        <button id="btnLang" class="btn-icon" type="button" title="Switch Language">🌐 EN</button>
+        <button id="btnTheme" class="btn-icon" type="button" title="Toggle Theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero & Global Currency/Nisab Controls -->
+    <section class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-content">
+          <div class="hero-tag">✨ Anubisland • منهج أهل السنة والجماعة</div>
+          <h2 data-i18n="appTitle">حاسبة الزكاة الشاملة</h2>
+          <p data-i18n="appDesc">حاسبة ذكية لجميع أنواع الزكاة على منهج أهل السنة والجماعة مع رسوم بيانية تفاعلية ودليل فقهي وتعليمي متكامل</p>
+        </div>
+
+        <div class="settings-panel">
+          <div class="setting-field">
+            <label for="currencySelect" data-i18n="currencyLabel">العملة:</label>
+            <select id="currencySelect"></select>
+          </div>
+          <div class="setting-field">
+            <label for="nisabMethod" data-i18n="nisabMethodLabel">معيار النصاب:</label>
+            <select id="nisabMethod">
+              <option value="gold" data-i18n="nisabGold">نصاب الذهب (85 جم عيار 24)</option>
+              <option value="silver" data-i18n="nisabSilver">نصاب الفضة (595 جم - الأحوط للفقراء)</option>
+            </select>
+          </div>
+          <div class="setting-field">
+            <label for="goldPriceInput" data-i18n="goldPriceLabel">سعر جرام الذهب 24:</label>
+            <input type="number" id="goldPriceInput" min="0" step="any" />
+          </div>
+          <div class="setting-field">
+            <label for="silverPriceInput" data-i18n="silverPriceLabel">سعر جرام الفضة:</label>
+            <input type="number" id="silverPriceInput" min="0" step="any" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Live KPI Strip -->
+    <section class="kpi-strip" aria-live="polite">
+      <div class="kpi-card" style="--kpi-accent:#f59e0b;">
+        <span class="kpi-label" data-i18n="nisabThresholdTitle">حد النصاب الحالي</span>
+        <strong class="kpi-value" id="kpiNisabValue">0</strong>
+        <span class="kpi-sub" id="kpiNisabSub">85 جرام ذهب عيار 24</span>
+      </div>
+      <div class="kpi-card" style="--kpi-accent:#3b82f6;">
+        <span class="kpi-label" data-i18n="totalWealthTitle">إجمالي الأصول الزكوية</span>
+        <strong class="kpi-value" id="kpiTotalWealth">0</strong>
+        <span class="kpi-sub" id="kpiNisabStatus">دون النصاب</span>
+      </div>
+      <div class="kpi-card" style="--kpi-accent:#10b981;">
+        <span class="kpi-label" data-i18n="totalZakatTitle">إجمالي الزكاة المستحقة</span>
+        <strong class="kpi-value" id="kpiTotalZakat">0</strong>
+        <span class="kpi-sub" id="kpiExtraInKind"></span>
+      </div>
+    </section>
+
+    <!-- Smart Fiqh Advisor -->
+    <section class="advisor-box" aria-live="polite">
+      <div class="advisor-head">💡 <span data-i18n="advisorTitle">المستشار الفقهي الذكي</span></div>
+      <ul class="advisor-list" id="advisorList"></ul>
+    </section>
+
+    <!-- Interactive Charts Section -->
+    <section id="analytics">
+      <div class="section-head">
+        <h2>📊 <span data-i18n="chartsTitle">لوحة الرسوم البيانية التوضيحية</span></h2>
+        <div class="section-actions">
+          <button id="btnPrint" class="btn-outline" type="button">🖨️ <span data-i18n="printBtn">طباعة / حفظ التقرير</span></button>
+          <button id="btnReset" class="btn-outline" type="button">↺ <span data-i18n="resetBtn">إعادة ضبط</span></button>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <h3 data-i18n="chartNisabTitle">رادار النصاب (مقارنة ثروتك بحد النصاب)</h3>
+          <div id="chartNisabGauge"></div>
+        </div>
+        <div class="chart-card">
+          <h3 data-i18n="chartDonutTitle">توزيع الزكاة حسب النوع</h3>
+          <div id="chartDonut"></div>
+        </div>
+        <div class="chart-card">
+          <h3 data-i18n="chartBarTitle">مقارنة الأصول الزكوية والزكاة المستحقة</h3>
+          <div id="chartBar"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- All 10 Zakat Calculator Cards -->
+    <section id="calculator">
+      <div class="section-head">
+        <h2>🧮 <span data-i18n="navCalc">الحاسبة الذكية لجميع أنواع الزكاة</span></h2>
+      </div>
+
+      <div class="cards-grid">
+        <!-- 1. Cash & Savings -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #059669, #10b981);">
+            <div class="card-title-wrap">
+              <div class="card-icon">💵</div>
+              <div>
+                <h3 data-i18n="catCashTitle">1. زكاة المال والنقد والمدخرات</h3>
+                <p data-i18n="catCashSub">السيولة النقدية والحسابات البنكية والودائع</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="cashOnHand">النقد والسيولة المتاحة</label>
+                <input type="number" id="cashOnHand" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="cashBank">الأرصدة البنكية والودائع</label>
+                <input type="number" id="cashBank" min="0" placeholder="0" data-calc />
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="cashDebtsDue">الديون الحالة عليك (تُخصم)</label>
+                <input type="number" id="cashDebtsDue" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="cashHawl">حولان الحول الهجري</label>
+                <select id="cashHawl" data-calc>
+                  <option value="yes">تم الحول الهجري (سنة قمرية)</option>
+                  <option value="no">لم يتم الحول بعد</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resCash">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              تجب زكاة المال بنسبة <strong>2.5% (ربع العشر)</strong> إذا بلغ صافي المال النصاب وحال عليه الحول الهجري. تُخصم الديون المستحقة السداد حالياً من إجمالي السيولة، وما بقي وبلغ النصاب تجب فيه الزكاة.
+            </div>
+          </details>
+        </article>
+
+        <!-- 2. Gold & Silver -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #b45309, #f59e0b);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🪙</div>
+              <div>
+                <h3 data-i18n="catGoldTitle">2. زكاة الذهب والفضة والحلي</h3>
+                <p data-i18n="catGoldSub">السبائك والمجوهرات باختلاف العيارات</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="goldGrams">وزن الذهب (جرام)</label>
+                <input type="number" id="goldGrams" min="0" step="any" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="goldKarat">عيار الذهب</label>
+                <select id="goldKarat" data-calc>
+                  <option value="24">عيار 24 (نقي 100%)</option>
+                  <option value="21" selected>عيار 21 (87.5%)</option>
+                  <option value="18">عيار 18 (75%)</option>
+                  <option value="14">عيار 14 (58.3%)</option>
+                </select>
+              </div>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="silverGrams">وزن الفضة (جرام)</label>
+                <input type="number" id="silverGrams" min="0" step="any" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="goldPurpose">نوع الاقتناء</label>
+                <select id="goldPurpose" data-calc>
+                  <option value="saving">ادخار / سبائك / جنيهات</option>
+                  <option value="worn_hanafi">حلي ملبوس (الأحوط عند الحنفية)</option>
+                  <option value="worn_jumhur">حلي ملبوس معتاد (مذهب الجمهور: لا زكاة)</option>
+                </select>
+              </div>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resGold">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              نصاب الذهب <strong>85 جرام ذهب خالص (عيار 24)</strong>، ونصاب الفضة <strong>595 جرام</strong>، والمقدار الواجب <strong>2.5%</strong>. الحاسبة تحوّل العيارات تلقائياً إلى مكافئ عيار 24. أما حلي المرأة المعد للزينة المباحة: فذهب الجمهور (المالكية والشافعية والحنابلة) إلى عدم وجوب الزكاة فيه، وذهب الحنفية إلى وجوبها احتياطاً.
+            </div>
+          </details>
+        </article>
+
+        <!-- 3. Stocks & Investments -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #1d4ed8, #3b82f6);">
+            <div class="card-title-wrap">
+              <div class="card-icon">📈</div>
+              <div>
+                <h3 data-i18n="catStocksTitle">3. زكاة الأسهم والصناديق الاستثمارية</h3>
+                <p data-i18n="catStocksSub">أسهم المضاربة أو الاستثمار طويل الأجل</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="stocksType">نية تملك الأسهم</label>
+              <select id="stocksType" data-calc>
+                <option value="trading">مضاربة ومتاجرة (2.5% على القيمة السوقية)</option>
+                <option value="dividends">استثمار وعوائد طويلة الأجل (2.5% على العوائد أو 30% تقديرياً)</option>
+              </select>
+            </div>
+            <div class="input-row">
+              <div class="form-group">
+                <label for="stocksMarketVal">القيمة السوقية للأسهم</label>
+                <input type="number" id="stocksMarketVal" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="stocksDividends">صافي الأرباح الموزعة (للاستثمار)</label>
+                <input type="number" id="stocksDividends" min="0" placeholder="0" data-calc />
+              </div>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resStocks">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              إذا كانت الأسهم للمضاربة والبيع والشراء فهي كعروض التجارة وتُزكى بنسبة <strong>2.5% على كامل القيمة السوقية</strong> عند تمام الحول. أما إذا كانت للاستثمار طويل الأجل وجني الأرباح، فتجب الزكاة في الأصول الزكوية للشركة أو بنسبة <strong>2.5% على الأرباح المحققة</strong> بعد الحول وبلوغ النصاب.
+            </div>
+          </details>
+        </article>
+
+        <!-- 4. Business & Trade Inventory -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #0e7490, #06b6d4);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🏪</div>
+              <div>
+                <h3 data-i18n="catTradeTitle">4. زكاة عروض التجارة والشركات</h3>
+                <p data-i18n="catTradeSub">البضائع المعدة للبيع والأصول المتداولة</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="tradeInventory">قيمة البضاعة بسعر البيع الحالي</label>
+                <input type="number" id="tradeInventory" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="tradeCash">النقدية + مستحقات لدى العملاء</label>
+                <input type="number" id="tradeCash" min="0" placeholder="0" data-calc />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="tradeLiabilities">التزامات وديون قصيرة الأجل على النشاط (تُخصم)</label>
+              <input type="number" id="tradeLiabilities" min="0" placeholder="0" data-calc />
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resTrade">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              تُقوّم البضائع المعدة للبيع عند تمام الحول بسعر السوق الحالي، ويُضاف إليها النقد والديون المرجوة على العملاء، وتُطرح الديون الحالة على التاجر (دون الأصول الثابتة كالمباني والآلات)، ويُخرج <strong>2.5%</strong>.
+            </div>
+          </details>
+        </article>
+
+        <!-- 5. Crops & Agriculture -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #4d7c0f, #84cc16);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🌾</div>
+              <div>
+                <h3 data-i18n="catCropsTitle">5. زكاة الزروع والثمار</h3>
+                <p data-i18n="catCropsSub">المحاصيل الزراعية حسب طريقة السقي والري</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="cropsKg">وزن المحصول (كيلوجرام)</label>
+                <input type="number" id="cropsKg" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="cropsValue">إجمالي قيمة المحصول</label>
+                <input type="number" id="cropsValue" min="0" placeholder="0" data-calc />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cropsIrrigation">طريقة السقي والري</label>
+              <select id="cropsIrrigation" data-calc>
+                <option value="0.10">سقي بدون كلفة (مطر / أنهار) — العُشر 10%</option>
+                <option value="0.05">سقي بآلات وكلفة ومؤونة — نصف العُشر 5%</option>
+                <option value="0.075">سقي مشترك (نصف بمطر ونصف بآلة) — 7.5%</option>
+              </select>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resCrops">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              تجب زكاة الزروع والثمار <strong>يوم الحصاد</strong> ولا يُشترط لها الحول، ونصابها <strong>5 أوسق (نحو 653 كجم)</strong>. النسبة <strong>10%</strong> فيما سُقي بغير كلفة، و<strong>5%</strong> فيما سُقي بالآلات والنفقة، و<strong>7.5%</strong> في السقي المشترك.
+            </div>
+          </details>
+        </article>
+
+        <!-- 6. Livestock -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #9a3412, #ea580c);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🐪</div>
+              <div>
+                <h3 data-i18n="catLivestockTitle">6. زكاة بهيمة الأنعام</h3>
+                <p data-i18n="catLivestockSub">الإبل والبقر والغنم السائمة بشروطها الشرعية</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="livestockType">نوع الأنعام</label>
+                <select id="livestockType" data-calc>
+                  <option value="sheep">الغنم والماعز (النصاب 40)</option>
+                  <option value="cows">الأبقار والجاموس (النصاب 30)</option>
+                  <option value="camels">الإبل (النصاب 5)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="livestockCount">العدد الإجمالي</label>
+                <input type="number" id="livestockCount" min="0" placeholder="0" data-calc />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="livestockGrazing">حالة الرعي والعلف</label>
+              <select id="livestockGrazing" data-calc>
+                <option value="yes">سائمة (ترعى الكلأ المباح معظم العام)</option>
+                <option value="trade">معدة للتجارة والبيع (تُزكى كعروض تجارة)</option>
+                <option value="no">معلوفة معظم العام وليست للتجارة (لا زكاة)</option>
+              </select>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resLivestock">لا زكاة</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              تُحسب وفق الأنصبة النبوية الصحيحة: الغنم من 40 إلى 120 شاة، والبقر من 30 تبيعاً ومن 40 مسنة، والإبل من 5 شاة ثم تتدرج إلى بنت مخاض وبنت لبون وحقة وجذعة، بشرط السوم وحولان الحول.
+            </div>
+          </details>
+        </article>
+
+        <!-- 7. Real Estate & Rentals -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #6d28d9, #8b5cf6);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🏢</div>
+              <div>
+                <h3 data-i18n="catRealEstateTitle">7. زكاة العقارات والأصول المؤجرة</h3>
+                <p data-i18n="catRealEstateSub">العقارات التجارية أو إيرادات الإيجار المدخرة</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="realEstateType">الغرض من العقار</label>
+              <select id="realEstateType" data-calc>
+                <option value="rental">عقار مؤجر (الزكاة على صافي الإيجار المدخر بعد الحول)</option>
+                <option value="trade">عقار معد للبيع والتجارة (2.5% من قيمته السوقية)</option>
+                <option value="personal">سكن شخصي (لا زكاة فيه)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="realEstateVal">قيمة العقار السوقية أو صافي الإيجار المدخر</label>
+              <input type="number" id="realEstateVal" min="0" placeholder="0" data-calc />
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resRealEstate">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              لا زكاة في أصل العقار المؤجر ولا في السكن الشخصي، وإنما تجب الزكاة بنسبة <strong>2.5% في غلته (الإيجار)</strong> إذا ادّخر وبلغ النصاب وحال عليه الحول. أما العقارات المشتراة بنية البيع والربح فتُزكى كعروض تجارة على قيمتها السوقية.
+            </div>
+          </details>
+        </article>
+
+        <!-- 8. Debts Owed to You -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #be185d, #ec4899);">
+            <div class="card-title-wrap">
+              <div class="card-icon">📜</div>
+              <div>
+                <h3 data-i18n="catDebtsTitle">8. زكاة الديون والمستحقات لك</h3>
+                <p data-i18n="catDebtsSub">الديون المرجوة السداد عند الغير</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="debtStatus">حالة المدين</label>
+              <select id="debtStatus" data-calc>
+                <option value="collectible">دين مرجو السداد (على مليء باذل)</option>
+                <option value="uncollectible">دين غير مرجو / على معسر (يُزكى عند قبضه لسنة واحدة)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="debtOwedVal">قيمة الدين المستحق لك</label>
+              <input type="number" id="debtOwedVal" min="0" placeholder="0" data-calc />
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resDebts">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              الدين المرجو على قادر على السداد يُضم لمالك وتُخرج زكاته كل عام (<strong>2.5%</strong>). أما الدين الميؤوس منه أو على معسر فلا تجب زكاته حتى تقبضه، ثم تزكيه لسنة واحدة عند قبضه على الراجح من أقوال الفقهاء.
+            </div>
+          </details>
+        </article>
+
+        <!-- 9. Rikaz & Minerals -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #78350f, #b45309);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🏺</div>
+              <div>
+                <h3 data-i18n="catRikazTitle">9. زكاة الركاز والمعادن</h3>
+                <p data-i18n="catRikazSub">الكنوز المدفونة والمستخرجات (الخُمس 20%)</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="rikazType">النوع</label>
+              <select id="rikazType" data-calc>
+                <option value="0.20">ركاز (دفين الجاهلية والكنوز المستخرجة) — 20%</option>
+                <option value="0.025">معادن مستخرجة من الأرض (ربع العشر) — 2.5%</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="rikazVal">القيمة المقدرة</label>
+              <input type="number" id="rikazVal" min="0" placeholder="0" data-calc />
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resRikaz">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              لقوله ﷺ: «وفي الركاز الخُمس»، يجب في الركاز <strong>20% فوراً</strong> دون اشتراط نصاب أو حول. أما المعادن المستخرجة كالذهب والفضة فتُزكى بنسبة <strong>2.5%</strong> إذا بلغت النصاب.
+            </div>
+          </details>
+        </article>
+
+        <!-- 10. Zakat al-Fitr -->
+        <article class="zakat-card">
+          <div class="card-banner" style="--card-gradient: linear-gradient(135deg, #4338ca, #6366f1);">
+            <div class="card-title-wrap">
+              <div class="card-icon">🌙</div>
+              <div>
+                <h3 data-i18n="catFitrTitle">10. زكاة الفطر</h3>
+                <p data-i18n="catFitrSub">واجبة على كل مسلم قبل صلاة عيد الفطر</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="input-row">
+              <div class="form-group">
+                <label for="fitrMembers">عدد أفراد الأسرة</label>
+                <input type="number" id="fitrMembers" min="0" placeholder="0" data-calc />
+              </div>
+              <div class="form-group">
+                <label for="fitrPerPerson">قيمة الفرد الواحد (صاع ≈ 2.5-3 كجم)</label>
+                <input type="number" id="fitrPerPerson" min="0" value="35" data-calc />
+              </div>
+            </div>
+            <div class="card-result">
+              <span data-i18n="dueLabel">الزكاة المستحقة:</span>
+              <strong id="resFitr">0</strong>
+            </div>
+          </div>
+          <details class="fiqh-details">
+            <summary data-i18n="fiqhToggle">الشرح الفقهي وطريقة الحساب</summary>
+            <div class="fiqh-content">
+              تجب على كل مسلم يملك قوت يومه وليلته، ومقدارها <strong>صاع من غالب قوت البلد</strong> عن كل فرد، والأفضل إخراجها قبل صلاة عيد الفطر، ويجوز إخراجها قبل العيد بيوم أو يومين، كما أجاز الحنفية وجمع من المعاصرين إخراج قيمتها نقداً لمصلحة الفقير.
+            </div>
+          </details>
+        </article>
+      </div>
+    </section>
+
+    <!-- Cultural & Educational Guide (Ahl al-Sunnah wal-Jama'ah) -->
+    <section id="education">
+      <div class="section-head">
+        <h2>📚 <span data-i18n="navEdu">الدليل الثقافي والفقهي (منهج أهل السنة والجماعة)</span></h2>
+      </div>
+
+      <div class="quran-box">
+        <p class="quran-verse">﴿ خُذْ مِنْ أَمْوَالِهِمْ صَدَقَةً تُطَهِّرُهُمْ وَتُزَكِّيهِم بِهَا وَصَلِّ عَلَيْهِمْ ۖ إِنَّ صَلَاتَكَ سَكَنٌ لَّهُمْ ﴾</p>
+        <span class="quran-ref">سورة التوبة — الآية 103</span>
+      </div>
+
+      <div class="edu-grid">
+        <div class="edu-card">
+          <h3>🌟 أهمية الزكاة ومعانيها</h3>
+          <p>الزكاة هي <strong>الركن الثالث من أركان الإسلام</strong>، ومعناها في اللغة: النماء والطهارة والبركة. وهي عبادة مالية تطهر نفس الغني من الشح والبخل، وتطهر المال وتنميه وتباركه، وتحقق التكافل الاجتماعي وسد حاجة الفقراء في المجتمع المسلم.</p>
+        </div>
+        <div class="edu-card">
+          <h3>⚖️ شروط وجوب الزكاة</h3>
+          <ul>
+            <li><strong>الإسلام والحرية:</strong> لا تجب على غير المسلم.</li>
+            <li><strong>الملك التام:</strong> أن يكون المال مملوكاً لصاحبه وتحت تصرفه.</li>
+            <li><strong>بلوغ النصاب:</strong> ما يعادل 85 جم ذهب عيار 24 أو 595 جم فضة.</li>
+            <li><strong>حولان الحول:</strong> مرور سنة هجرية كاملة (إلا الزروع والثمار والركاز).</li>
+            <li><strong>الفضل عن الحاجات الأصلية:</strong> وسداد الديون الحالة.</li>
+          </ul>
+        </div>
+        <div class="edu-card">
+          <h3>🕰️ وقت إخراج الزكاة</h3>
+          <ul>
+            <li><strong>الأموال والتجارة والذهب والأنعام:</strong> عند تمام الحول القمري (الهجري).</li>
+            <li><strong>الزروع والثمار:</strong> يوم الحصاد ﴿وَآتُوا حَقَّهُ يَوْمَ حَصَادِهِ﴾.</li>
+            <li><strong>زكاة الفطر:</strong> من غروب شمس آخر يوم في رمضان إلى ما قبل صلاة العيد.</li>
+            <li><strong>الركاز:</strong> فوراً عند العثور عليه.</li>
+            <li><strong>تعجيل الزكاة:</strong> يجوز تعجيلها قبل تمام الحول لحاجة أو مصلحة راجحة.</li>
+          </ul>
+        </div>
+        <div class="edu-card">
+          <h3>🤲 آداب إخراج الزكاة ومن لا تجوز لهم</h3>
+          <ul>
+            <li>استحضار النية الخالصة لله تعالى عند الإخراج أو العزل.</li>
+            <li>إخراجها من طيب المال لا من رديئه، مع الرفق بالفقير وعدم المنّ والأذى.</li>
+            <li><strong>لا تجوز الزكاة لـ:</strong> الأصول (الوالدين والأجداد) والفروع (الأبناء والأحفاد)، ولا للزوجة، ولا للأغنياء، ولا لآل البيت النبوي الشريف.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8 Masarif Section -->
+    <section id="masarif">
+      <div class="section-head">
+        <h2>🧭 <span data-i18n="navMasarif">مصارف الزكاة الثمانية (التوبة: 60)</span></h2>
+      </div>
+      <div class="masarif-grid" id="masarifGrid"></div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <div class="container">
+      <p class="footer-brand" data-i18n="footerRights">تطبيق حاسبة الزكاة — جميع الحقوق محفوظة لشركة Anubisland</p>
+      <p class="footer-note" data-i18n="footerNote">تم إعداد الأحكام والحسابات وفق أصول الفقه الإسلامي على منهج أهل السنة والجماعة.</p>
+    </div>
+  </footer>
+
+  <!-- Mobile Sticky Bottom Summary -->
+  <div class="mobile-sticky-bar">
+    <span data-i18n="totalZakatTitle">إجمالي الزكاة المستحقة:</span>
+    <strong id="mobileTotalZakat">0</strong>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
