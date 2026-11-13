@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Amiri:wght@400;700&family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@500;700;800&family=Readex+Pro:wght@400;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -40,6 +40,19 @@
         <button id="btnInstallPWA" class="btn-primary hidden" type="button">
           <span>📲</span> <span data-i18n="installBtn">تثبيت التطبيق</span>
         </button>
+        <select id="fontSelect" class="header-select" title="نوع الخط" aria-label="نوع الخط">
+          <option value="'Cairo', sans-serif">خط: Cairo (كايرو)</option>
+          <option value="'Amiri', serif">خط: Amiri (أميري)</option>
+          <option value="'Tajawal', sans-serif">خط: Tajawal (تجول)</option>
+          <option value="'Almarai', sans-serif">خط: Almarai (المراعي)</option>
+          <option value="'Readex Pro', sans-serif">خط: Readex Pro</option>
+        </select>
+        <select id="fontSizeSelect" class="header-select" title="حجم الخط" aria-label="حجم الخط">
+          <option value="14px">حجم: صغير</option>
+          <option value="16px" selected>حجم: متوسط</option>
+          <option value="18px">حجم: كبير</option>
+          <option value="20px">حجم: كبير جداً</option>
+        </select>
         <button id="btnLang" class="btn-icon" type="button" title="Switch Language">🌐 EN</button>
         <button id="btnTheme" class="btn-icon" type="button" title="Toggle Theme">🌙</button>
       </div>

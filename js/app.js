@@ -18,6 +18,8 @@ const STORAGE_KEY = 'anubisland_zakaa_state_v1';
 let state = {
   lang: 'ar',
   theme: 'light',
+  fontFamily: "'Cairo', sans-serif",
+  fontSize: '16px',
   currency: 'EGP',
   nisabMethod: 'gold',
   goldPriceEGP: NISAB_CONSTANTS.DEFAULT_GOLD_24K_EGP,
@@ -80,6 +82,13 @@ function applyLanguage() {
 function applyTheme() {
   document.documentElement.setAttribute('data-theme', state.theme);
   el('btnTheme').textContent = state.theme === 'dark' ? '☀️' : '🌙';
+}
+
+function applyTypography() {
+  document.documentElement.style.setProperty('--app-font', state.fontFamily);
+  document.documentElement.style.setProperty('--base-font-size', state.fontSize);
+  if (el('fontSelect')) el('fontSelect').value = state.fontFamily;
+  if (el('fontSizeSelect')) el('fontSizeSelect').value = state.fontSize;
 }
 
 function recalculate() {
@@ -302,6 +311,7 @@ el('btnInstallPWA').addEventListener('click', async () => {
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
   applyTheme();
+  applyTypography();
   initCurrencySelect();
   el('nisabMethod').value = state.nisabMethod;
   syncMetalInputsToCurrency();
@@ -343,6 +353,18 @@ document.addEventListener('DOMContentLoaded', () => {
   el('btnTheme').addEventListener('click', () => {
     state.theme = state.theme === 'light' ? 'dark' : 'light';
     applyTheme();
+    saveState();
+  });
+
+  el('fontSelect').addEventListener('change', (e) => {
+    state.fontFamily = e.target.value;
+    applyTypography();
+    saveState();
+  });
+
+  el('fontSizeSelect').addEventListener('change', (e) => {
+    state.fontSize = e.target.value;
+    applyTypography();
     saveState();
   });
 
