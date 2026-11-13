@@ -30,10 +30,10 @@
       </div>
 
       <nav class="nav-pills" aria-label="Main Navigation">
-        <a href="#calculator" class="nav-pill active" data-i18n="navCalc">الحاسبة الذكية</a>
-        <a href="#analytics" class="nav-pill" data-i18n="navCharts">الرسوم والتحليلات</a>
-        <a href="#education" class="nav-pill" data-i18n="navEdu">الدليل الثقافي والفقهي</a>
-        <a href="#masarif" class="nav-pill" data-i18n="navMasarif">مصارف الزكاة</a>
+        <button type="button" class="nav-pill active" data-view="calculator" data-i18n="navCalc">الحاسبة الذكية</button>
+        <button type="button" class="nav-pill" data-view="analytics" data-i18n="navCharts">الرسوم والتحليلات</button>
+        <button type="button" class="nav-pill" data-view="education" data-i18n="navEdu">الدليل الثقافي والفقهي</button>
+        <button type="button" class="nav-pill" data-view="masarif" data-i18n="navMasarif">مصارف الزكاة</button>
       </nav>
 
       <div class="header-actions">
@@ -60,6 +60,8 @@
   </header>
 
   <main class="container">
+    <!-- VIEW 1: Calculator -->
+    <div id="view-calculator" class="app-view active">
     <!-- Hero & Global Currency/Nisab Controls -->
     <section class="hero-section">
       <div class="hero-grid">
@@ -116,32 +118,6 @@
     <section class="advisor-box" aria-live="polite">
       <div class="advisor-head">💡 <span data-i18n="advisorTitle">المستشار الفقهي الذكي</span></div>
       <ul class="advisor-list" id="advisorList"></ul>
-    </section>
-
-    <!-- Interactive Charts Section -->
-    <section id="analytics">
-      <div class="section-head">
-        <h2>📊 <span data-i18n="chartsTitle">لوحة الرسوم البيانية التوضيحية</span></h2>
-        <div class="section-actions">
-          <button id="btnPrint" class="btn-outline" type="button">🖨️ <span data-i18n="printBtn">طباعة / حفظ التقرير</span></button>
-          <button id="btnReset" class="btn-outline" type="button">↺ <span data-i18n="resetBtn">إعادة ضبط</span></button>
-        </div>
-      </div>
-
-      <div class="charts-grid">
-        <div class="chart-card">
-          <h3 data-i18n="chartNisabTitle">رادار النصاب (مقارنة ثروتك بحد النصاب)</h3>
-          <div id="chartNisabGauge"></div>
-        </div>
-        <div class="chart-card">
-          <h3 data-i18n="chartDonutTitle">توزيع الزكاة حسب النوع</h3>
-          <div id="chartDonut"></div>
-        </div>
-        <div class="chart-card">
-          <h3 data-i18n="chartBarTitle">مقارنة الأصول الزكوية والزكاة المستحقة</h3>
-          <div id="chartBar"></div>
-        </div>
-      </div>
     </section>
 
     <!-- All 10 Zakat Calculator Cards -->
@@ -569,8 +545,38 @@
         </article>
       </div>
     </section>
+    </div>
 
-    <!-- Cultural & Educational Guide (Ahl al-Sunnah wal-Jama'ah) -->
+    <!-- VIEW 2: Interactive Charts & Analytics Screen -->
+    <div id="view-analytics" class="app-view">
+      <section id="analytics">
+        <div class="section-head">
+          <h2>📊 <span data-i18n="chartsTitle">لوحة الرسوم البيانية التوضيحية</span></h2>
+          <div class="section-actions">
+            <button id="btnPrint" class="btn-outline" type="button">🖨️ <span data-i18n="printBtn">طباعة / حفظ التقرير</span></button>
+            <button id="btnReset" class="btn-outline" type="button">↺ <span data-i18n="resetBtn">إعادة ضبط</span></button>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <h3 data-i18n="chartNisabTitle">رادار النصاب (مقارنة ثروتك بحد النصاب)</h3>
+            <div id="chartNisabGauge"></div>
+          </div>
+          <div class="chart-card">
+            <h3 data-i18n="chartDonutTitle">توزيع الزكاة حسب النوع</h3>
+            <div id="chartDonut"></div>
+          </div>
+          <div class="chart-card">
+            <h3 data-i18n="chartBarTitle">مقارنة الأصول الزكوية والزكاة المستحقة</h3>
+            <div id="chartBar"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- VIEW 3: Cultural & Educational Guide -->
+    <div id="view-education" class="app-view">
     <section id="education">
       <div class="section-head">
         <h2>📚 <span data-i18n="navEdu">الدليل الثقافي والفقهي (منهج أهل السنة والجماعة)</span></h2>
@@ -616,14 +622,17 @@
         </div>
       </div>
     </section>
+    </div>
 
-    <!-- 8 Masarif Section -->
+    <!-- VIEW 4: 8 Masarif Section -->
+    <div id="view-masarif" class="app-view">
     <section id="masarif">
       <div class="section-head">
         <h2>🧭 <span data-i18n="navMasarif">مصارف الزكاة الثمانية (التوبة: 60)</span></h2>
       </div>
       <div class="masarif-grid" id="masarifGrid"></div>
     </section>
+    </div>
   </main>
 
   <footer class="app-footer">

@@ -377,6 +377,19 @@ document.addEventListener('DOMContentLoaded', () => {
     recalculate();
   });
 
+  // View / Screen Switching
+  document.querySelectorAll('.nav-pill[data-view]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-view');
+      document.querySelectorAll('.nav-pill[data-view]').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.app-view').forEach((v) => v.classList.remove('active'));
+      const viewEl = el(`view-${target}`);
+      if (viewEl) viewEl.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
   // Register Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./sw.js').catch(() => {});
